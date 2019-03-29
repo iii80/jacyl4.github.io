@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>电脑 on 十四-Blog</title>
+    <link>https://jacyl4.github.io/categories/%E7%94%B5%E8%84%91/</link>
+    <description>Recent content in 电脑 on 十四-Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-CN</language>
+    <lastBuildDate>Thu, 20 Dec 2018 01:00:00 +0800</lastBuildDate>
+    
+	<atom:link href="https://jacyl4.github.io/categories/%E7%94%B5%E8%84%91/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>黑苹果 技嘉z370n-wifi 主板 禁用 CFG LOCK 也就是 MSR 0xE2</title>
+      <link>https://jacyl4.github.io/post/hackintosh-z370n-wifi-cfg-lock/</link>
+      <pubDate>Thu, 20 Dec 2018 01:00:00 +0800</pubDate>
+      
+      <guid>https://jacyl4.github.io/post/hackintosh-z370n-wifi-cfg-lock/</guid>
+      <description>说起黑苹果，很多人一定非常推崇技嘉主板。 但是前两天发现技嘉主板其实 MSR 0xE2 是锁的，也就是CFG Lock，而且并没有选项可以在BIOS里找到。 又一</description>
+    </item>
+    
+    <item>
+      <title>【ROS&#43;OpenWrt&#43;Pi-hole合用】双线聚合，真旁路，超绝加速Burst Link【DNS补充篇】</title>
+      <link>https://jacyl4.github.io/post/ros-openwrt-pihole-burstlink3/</link>
+      <pubDate>Wed, 19 Dec 2018 04:50:00 +0800</pubDate>
+      
+      <guid>https://jacyl4.github.io/post/ros-openwrt-pihole-burstlink3/</guid>
+      <description>独立于前两篇，添置Pi-hole之后，粗略写一下。 Pi-hole这个项目还是很推荐的。就算不用软路由，都非常推荐局域网内挂个Pi-hole，</description>
+    </item>
+    
+    <item>
+      <title>【ROS&#43;OpenWrt合用】双线聚合，真旁路，超绝加速Burst Link【下篇】</title>
+      <link>https://jacyl4.github.io/post/ros-openwrt-burstlink2/</link>
+      <pubDate>Wed, 19 Dec 2018 02:32:00 +0800</pubDate>
+      
+      <guid>https://jacyl4.github.io/post/ros-openwrt-burstlink2/</guid>
+      <description>续【上篇】，ROS跟OpenWrt都是建在esxi内的。pcie扩展的i350-T4网卡 直通 给了ROS，建一个端口组，连通ROS，LEDE 以</description>
+    </item>
+    
+    <item>
+      <title>【ROS&#43;OpenWrt合用】双线聚合，真旁路，超绝加速Burst Link【上篇】</title>
+      <link>https://jacyl4.github.io/post/ros-openwrt-burstlink1/</link>
+      <pubDate>Wed, 19 Dec 2018 01:45:00 +0800</pubDate>
+      
+      <guid>https://jacyl4.github.io/post/ros-openwrt-burstlink1/</guid>
+      <description>先上个拓补图吧 以前写的时候没地方放，发在了CHH上，现在hugo博客相见恨晚地搭完了，就搬回来吧。 一直挺嫌弃硬路由的死板，性能僝弱。 比如我有</description>
+    </item>
+    
+    <item>
+      <title>Debian网关-旁路科学上网-Burst Link</title>
+      <link>https://jacyl4.github.io/post/debian-gateway/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://jacyl4.github.io/post/debian-gateway/</guid>
+      <description>继续书接上文， 以前用LEDE作旁路，现直接跑在debian上当旁路了。 一键脚本分服务端跟客户端。 服务端就是需要个vps，kvm最好。 客户端嘛</description>
+    </item>
+    
+  </channel>
+</rss>
