@@ -17,7 +17,7 @@
       <pubDate>Tue, 26 Mar 2019 07:12:00 +0800</pubDate>
       
       <guid>https://jacyl4.github.io/post/debian-gateway/</guid>
-      <description>继续书接上文 以前用LEDE作旁路，现直接跑在debian上当旁路了。 结构上嘛，就是v2+ws+tls，dns去污染方面用dns-over-h</description>
+      <description>继续书接上文， 以前用LEDE作旁路，现直接跑在debian上当旁路了。 结构上嘛，就是v2+ws+tls，dns去污染方面用dns-over-</description>
     </item>
     
     <item>
