@@ -1,0 +1,292 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+
+    <meta charset="utf-8">
+    <meta name="generator" content="Hugo 0.53" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>【ROS&#43;OpenWrt合用】双线聚合，真旁路，超绝加速Burst Link【上篇】 | 十四-Blog</title>
+    <meta property="og:title" content="【ROS&#43;OpenWrt合用】双线聚合，真旁路，超绝加速Burst Link【上篇】 - 十四-Blog">
+    <meta property="og:type" content="article">
+        
+    <meta property="article:published_time" content="2018-12-19T01:45:00&#43;08:00">
+        
+        
+    <meta property="article:modified_time" content="2018-12-19T01:45:00&#43;08:00">
+        
+    <meta name="Keywords" content="[路由 ros routeros OpenWrt LEDE 旁路]">
+    <meta name="description" content="【ROS&#43;OpenWrt合用】双线聚合，真旁路，超绝加速Burst Link【上篇】">
+        
+    <meta name="author" content="JacyL4">
+    <meta property="og:url" content="https://jacyl4.github.io/post/ros-openwrt-burstlink1/">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+
+    <link rel="stylesheet" href="/css/normalize.css">
+    
+        <link rel="stylesheet" href="/css/prism.css">
+    
+    <link rel="stylesheet" href="/css/style.css">
+    <script type="text/javascript" src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+
+    
+
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-135457802-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+    
+    
+        <link rel="stylesheet" href="/css/douban.css">
+    
+        <link rel="stylesheet" href="/css/other.css">
+    
+</head>
+
+<body>
+<header id="header" class="clearfix">
+    <div class="container">
+        <div class="col-group">
+            <div class="site-name ">
+                
+                    <a id="logo" href="https://jacyl4.github.io/">
+                        十四-Blog
+                    </a>
+                
+                <p class="description">-</p>
+            </div>
+            <div>
+                <nav id="nav-menu" class="clearfix">
+                    <a class="current" href="https://jacyl4.github.io/">首页</a>
+                    
+                    <a  href="https://jacyl4.github.io/archives/" title="存档">存档</a>
+                    
+                    <a  href="https://jacyl4.github.io/about/" title="关于">关于</a>
+                    
+                </nav>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+<div id="body">
+    <div class="container">
+        <div class="col-group">
+
+            <div class="col-8" id="main">
+                <div class="res-cons">
+                    <article class="post">
+                        <header>
+                            <h1 class="post-title">【ROS&#43;OpenWrt合用】双线聚合，真旁路，超绝加速Burst Link【上篇】</h1>
+                        </header>
+                        <date class="post-meta meta-date">
+                            2018年12月19日 -
+                        </date>
+                        
+                        <div class="post-meta meta-category">
+                            
+                                <a href="https://jacyl4.github.io/categories/%E7%94%B5%E8%84%91">电脑</a>
+                            
+                        </div>
+                        
+                        
+                        <div class="post-content">
+                            <p>先上个拓补图吧
+<img src="https://i.loli.net/2018/12/19/5c19325d99972.jpg" alt="Snipaste_2018-12-19_01-09-34gallery5" /></p>
+
+<p>以前写的时候没地方放，发在了CHH上，现在hugo博客相见恨晚地搭完了，就搬回来吧。</p>
+
+<p>一直挺嫌弃硬路由的死板，性能僝弱。</p>
+
+<p>比如我有电信三拨能够获得三个公网ip，移动双拨虽然都是内网ip，电信移动各取一拨来聚合，根据网上的ip表，电信走电信，移动走移动。下载的时候，两边有源还能同时获取数据下载。科学上网的时候，有些cn2较好的线路可以走电信，有些没有特殊优化过的科学上网线路，可以走移动。</p>
+
+<p>剩下的线路可以做些别的。</p>
+
+<p>其实最早也是网件4300 刷OpenWrt开始走入软路由的，当初还用了好久好久，直到有一天，静下心来研究了esxi，才开始步入ROS+OpenWrt。上面的用法也都是近两年才自己慢慢凑起来的。</p>
+
+<p>粗看有点复杂</p>
+
+<p>ROS地址：10.0.0.1</p>
+
+<p>OpenWrt地址：10.0.0.2</p>
+
+<p>DHCP由ROS负责</p>
+
+<p>具体思路由</p>
+
+<ol>
+<li><p>ROS 作为前端主路由 pppoe拨号啊，聚合啊，指定线路啊，DHCP啊，端口映射啊，upnp啊，区分电信移动的路由表啊，本地DNS缓存啊。。。都在它上面</p></li>
+
+<li><p>OpenWrt 用为透明防火墙 旁路 接入，无NAT，只设置一个接口LAN，不需要WAN。装上科学上网组件，自动区分国内国外站点ip，国外站点直接走隧道，国内站点转发DNS到ROS上，利用本地DNS加速访问，走电信或者移动线路。</p></li>
+</ol>
+
+<p>顺带讲一句。如果cpu不差的话，软路由分配cpu单核跑的比较快。</p>
+
+<p>这套方案起先在3215u上搞的。
+<img src="https://i.loli.net/2018/12/19/5c19325e31651.jpg" alt="P1010119gallery3" />
+<img src="https://i.loli.net/2018/12/19/5c19325e0b465.jpg" alt="P1010120gallery4" /></p>
+
+<p>其实3215u性能还是不错的，只是它自带的网口为intel i210 直通给ROS后不认。后面就换到了E3 v3平台，顺带可以多跑好多个虚拟机了。
+<img src="https://i.loli.net/2018/12/19/5c19325e32191.jpg" alt="Snipaste_2018-12-19_01-37-00gallery1" />
+<img src="https://i.loli.net/2018/12/19/5c19325e39f81.jpg" alt="Snipaste_2018-12-19_01-36-30gallery2" /></p>
+
+<p>再后来嘛，把黑群晖整合进去了。把这个小机箱搞的面目全非，两个风扇外置，电源外置，内部塞进了个能够装14块硬盘的结构。12块3.5寸HDD，2块ssd。<img src="https://i.loli.net/2018/12/19/5c19325e03727.jpg" alt="Snipaste_2018-12-19_01-40-25gallery7" />
+<img src="https://i.loli.net/2018/12/19/5c19325e05309.jpg" alt="Snipaste_2018-12-19_01-40-44gallery6" /></p>
+
+<p>好啦，大概记录下吧。</p>
+
+<p>具体的配置参数在【下篇】里讲。至于无线部份，以后再折腾吧，应该是vWLC+ap的mesh方案吧。</p>
+
+                        </div>
+
+                        
+
+
+                        <div class="post-meta meta-tags">
+                            
+                            <ul class="clearfix">
+                                
+                                <li><a href="https://jacyl4.github.io/tags/%E8%B7%AF%E7%94%B1">路由</a></li>
+                                
+                            </ul>
+                            
+                        </div>
+                    </article>
+                    
+    
+
+    
+    
+    <div class="post bg-white">
+      <script src="https://utteranc.es/client.js"
+            repo= "jacyl4/jacyl4.github.io-comments"
+            issue-term="title"
+            theme="github-light"
+            crossorigin="anonymous"
+            async>
+      </script>
+    </div>
+    
+                </div>
+            </div>
+            <div id="secondary">
+    <section class="widget">
+        <form id="search" action="//www.google.com/search" method="get" accept-charset="utf-8" target="_blank" _lpchecked="1">
+      
+      <input type="text" name="q" maxlength="20" placeholder="Search">
+      <input type="hidden" name="sitesearch" value="https://jacyl4.github.io/">
+      <button type="submit" class="submit icon-search"></button>
+</form>
+    </section>
+    
+    <section class="widget">
+        <h3 class="widget-title">最近文章</h3>
+<ul class="widget-list">
+    
+    <li>
+        <a href="https://jacyl4.github.io/post/debian-gateway/" title="Debian网关-旁路科学上网-Burst Link">Debian网关-旁路科学上网-Burst Link</a>
+    </li>
+    
+    <li>
+        <a href="https://jacyl4.github.io/post/hackintosh-z370n-wifi-cfg-lock/" title="黑苹果 技嘉z370n-wifi 主板 禁用 CFG LOCK 也就是 MSR 0xE2">黑苹果 技嘉z370n-wifi 主板 禁用 CFG LOCK 也就是 MSR 0xE2</a>
+    </li>
+    
+    <li>
+        <a href="https://jacyl4.github.io/post/ros-openwrt-pihole-burstlink3/" title="【ROS&#43;OpenWrt&#43;Pi-hole合用】双线聚合，真旁路，超绝加速Burst Link【DNS补充篇】">【ROS&#43;OpenWrt&#43;Pi-hole合用】双线聚合，真旁路，超绝加速Burst Link【DNS补充篇】</a>
+    </li>
+    
+    <li>
+        <a href="https://jacyl4.github.io/post/ros-openwrt-burstlink2/" title="【ROS&#43;OpenWrt合用】双线聚合，真旁路，超绝加速Burst Link【下篇】">【ROS&#43;OpenWrt合用】双线聚合，真旁路，超绝加速Burst Link【下篇】</a>
+    </li>
+    
+    <li>
+        <a href="https://jacyl4.github.io/post/ros-openwrt-burstlink1/" title="【ROS&#43;OpenWrt合用】双线聚合，真旁路，超绝加速Burst Link【上篇】">【ROS&#43;OpenWrt合用】双线聚合，真旁路，超绝加速Burst Link【上篇】</a>
+    </li>
+    
+</ul>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title">分类</h3>
+<ul class="widget-list">
+    
+    <li>
+        <a href="https://jacyl4.github.io/categories/%E7%94%B5%E8%84%91/">电脑(5)</a>
+    </li>
+    
+</ul>
+    </section>
+
+    <section class="widget">
+        <h3 class="widget-title">标签</h3>
+<div class="tagcloud">
+    
+    <a href="https://jacyl4.github.io/tags/%E8%B7%AF%E7%94%B1/">路由</a>
+    
+    <a href="https://jacyl4.github.io/tags/%E9%BB%91%E8%8B%B9%E6%9E%9C/">黑苹果</a>
+    
+</div>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title">其它</h3>
+        <ul class="widget-list">
+            <li><a href="https://jacyl4.github.io/index.xml">文章 RSS</a></li>
+        </ul>
+    </section>
+</div>
+        </div>
+    </div>
+</div>
+<footer id="footer">
+    <div class="container">
+        &copy; 2018 <a href="https://jacyl4.github.io/">十四-Blog By JacyL4</a>.
+        Powered by <a rel="nofollow noreferer noopener" href="https://gohugo.io" target="_blank">Hugo</a>.
+        <a href="http://www.flysnow.org/" target="_blank">Theme</a> based on <a href="https://github.com/rujews/maupassant-hugo" target="_blank">maupassant</a>.
+        
+    </div>
+</footer>
+
+
+    <script type="text/javascript">
+    
+    (function(){
+        $("pre code").parent().addClass("line-numbers")
+    }())
+
+    window.MathJax = {
+        tex2jax: {
+            inlineMath: [ ['$','$'] ],
+            processEscapes: true
+        }
+    };
+    </script>
+    <script type="text/javascript" src="/js/prism.js" async="true"></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+
+<a id="rocket" href="#top"></a>
+<script type="text/javascript" src="/js/totop.js?v=0.0.0" async=""></script>
+
+
+
+
+
+  <script src="/js/douban.js"></script>
+
+</body>
+</html>
