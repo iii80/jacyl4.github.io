@@ -177,10 +177,8 @@ reboot
 <pre><code>sed -i '/net.core.default_qdisc/d' /etc/sysctl.conf
 sed -i '/net.ipv4.tcp_congestion_control/d' /etc/sysctl.conf
 
-cat &gt;&gt; /etc/sysctl.conf &lt;&lt; EOF
-net.core.default_qdisc=fq
-net.ipv4.tcp_congestion_control=bbrplus
-EOF
+echo &quot;net.core.default_qdisc=fq&quot; &gt;&gt; /etc/sysctl.conf
+echo &quot;net.ipv4.tcp_congestion_control=bbrplus&quot; &gt;&gt; /etc/sysctl.conf
 
 sysctl -p
 </code></pre>
