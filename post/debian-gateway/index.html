@@ -234,10 +234,7 @@ curl -O https://raw.githubusercontent.com/jacyl4/de_GWD/master/de_GWD_Server/ser
 
 <p>客户端需要翻墙安装。</p>
 
-<pre><code>apt-get update
-apt-get -y upgrade
-apt-get install -y curl
-curl -O https://raw.githubusercontent.com/jacyl4/de_GWD/master/de_GWD_Client/client &amp;&amp; chmod +x client &amp;&amp; ./client
+<pre><code>wget --no-check-certificate https://raw.githubusercontent.com/jacyl4/de_GWD/master/de_GWD_Client/client -O ~/client &amp;&amp; chmod +x client &amp;&amp; ./client
 </code></pre>
 
 <p>UUID跟path 对应上面 服务端设置的。</p>
