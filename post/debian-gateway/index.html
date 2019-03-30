@@ -213,13 +213,15 @@ curl -O https://raw.githubusercontent.com/jacyl4/de_GWD/master/de_GWD_Server/ser
 
 <p>“path”的话，可以选择uuid后几位 比如 /xxxxxx</p>
 
+<p>安装完，重启一遍。就结束了。</p>
+
+<p>选项3用于切换1.1.1.1的doh或者普通的8.8.8.8为上游dns。</p>
+
+<p>选项4是因为安装过程中，会自动将vps改为静态ip，不再自动获取ip，万一的万一，以后需要换地址方便更改。</p>
+
 <ul>
-<li><p>服务端脚本会自动安装nginx，</p></li>
-
-<li><p>如果vps中未存在nginx，则自动apt-get安装nginx，并自动生成证书，及ocsp stapling。</p></li>
+<li>补：脚本也支持 通过 [lnmp.org]()</li>
 </ul>
-
-<p>对于vps中已有LNMP的话，只支持一种：</p>
 
 <p>证书位置在 /usr/local/nginx/conf/ssl</p>
 
@@ -230,10 +232,6 @@ curl -O https://raw.githubusercontent.com/jacyl4/de_GWD/master/de_GWD_Server/ser
 <p>所以最简洁的，还是全新debian上开始安装服务端。。。</p>
 
 <p>安装完，重启一遍。</p>
-
-<p>选项3用于切换1.1.1.1的doh或者普通的8.8.8.8为上游dns。</p>
-
-<p>选项4是因为安装过程中，会自动将vps改为静态ip，不再自动获取ip，万一的万一，以后需要换地址方便更改。</p>
 
 <h4 id="客户端">客户端：</h4>
 
