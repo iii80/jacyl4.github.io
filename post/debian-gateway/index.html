@@ -120,7 +120,7 @@ if (!doNotTrack) {
 
 <h4 id="vps上通过网络重装办法安装最新debian">vps上通过网络重装办法安装最新debian</h4>
 
-<p>ssh登录</p>
+<p>ssh登录vps</p>
 
 <pre><code>mkdir /boot/install
 cd /boot/install
@@ -136,7 +136,7 @@ initrd /boot/install/initrd.gz
 boot
 </code></pre>
 
-<p>然后就开始一路回车，安装完新debian。</p>
+<p>开始安装全新debian。</p>
 
 <h4 id="新装的debian现在不允许直接以root登录-启用root登录">新装的debian现在不允许直接以root登录，启用root登录</h4>
 
@@ -150,6 +150,8 @@ systemctl restart sshd
 <p>现在就可以直接以root登录vps了。</p>
 
 <h4 id="更换内核开启bbrplus">更换内核开启bbrplus：</h4>
+
+<p>ssh登录vps</p>
 
 <pre><code>apt-get update
 apt-get -y upgrade
@@ -174,6 +176,8 @@ update-grub
 reboot
 </code></pre>
 
+<p>再次ssh登录vps</p>
+
 <pre><code>sed -i '/net.core.default_qdisc/d' /etc/sysctl.conf
 sed -i '/net.ipv4.tcp_congestion_control/d' /etc/sysctl.conf
 
@@ -183,11 +187,13 @@ echo &quot;net.ipv4.tcp_congestion_control=bbrplus&quot; &gt;&gt; /etc/sysctl.co
 sysctl -p
 </code></pre>
 
+<p>到此bbrplus已生效。</p>
+
 <h2 id="部署">部署</h2>
 
 <h4 id="服务端">服务端：</h4>
 
-<p>再次ssh登录vps</p>
+<p>ssh登录vps</p>
 
 <pre><code>apt-get install -y curl
 curl -O https://raw.githubusercontent.com/jacyl4/de_GWD/master/de_GWD_Server/server &amp;&amp; chmod +x server &amp;&amp; ./server
