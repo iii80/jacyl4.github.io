@@ -118,9 +118,9 @@ if (!doNotTrack) {
 
 <p>客户端嘛，随便一个能跑debian的设备就行了，单网口就行。（支持 x86/amd64 平台 以及 rpi 等 aarch64/arm64 平台）</p>
 
-<h5 id="vps上通过网络重装办法安装最新debian-可选">vps上通过网络重装办法安装最新debian（可选）</h5>
+<h4 id="vps上通过网络重装办法安装最新debian">vps上通过网络重装办法安装最新debian</h4>
 
-<p>现有系统root登录后输入：</p>
+<p>ssh登录</p>
 
 <pre><code>mkdir /boot/install
 cd /boot/install
@@ -138,7 +138,7 @@ boot
 
 <p>然后就开始一路回车，安装完新debian。</p>
 
-<h5 id="新装的debian现在不允许直接以root登录-启用root登录">新装的debian现在不允许直接以root登录，启用root登录</h5>
+<h4 id="新装的debian现在不允许直接以root登录-启用root登录">新装的debian现在不允许直接以root登录，启用root登录</h4>
 
 <p>先以安装过程中创建的普通用户ssh登录vps，</p>
 
@@ -149,7 +149,7 @@ systemctl restart sshd
 
 <p>现在就可以直接以root登录vps了。</p>
 
-<h5 id="更换内核以支持bbrplus">更换内核以支持bbrplus：</h5>
+<h4 id="更换内核开启bbrplus">更换内核开启bbrplus：</h4>
 
 <pre><code>apt-get update
 apt-get -y upgrade
