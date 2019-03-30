@@ -174,8 +174,16 @@ update-grub
 reboot
 </code></pre>
 
-<p>sed -i &lsquo;/net.core.default_qdisc/d&rsquo; /etc/sysctl.conf
-sed -i &lsquo;/net.ipv4.tcp_congestion_control/d&rsquo; /etc/sysctl.conf</p>
+<pre><code>sed -i '/net.core.default_qdisc/d' /etc/sysctl.conf
+sed -i '/net.ipv4.tcp_congestion_control/d' /etc/sysctl.conf
+
+cat &gt;&gt; /etc/sysctl.conf &lt;&lt; EOF
+net.core.default_qdisc=fq
+net.ipv4.tcp_congestion_control=bbrplus
+EOF
+
+sysctl -p
+</code></pre>
 
 <h2 id="部署">部署</h2>
 
