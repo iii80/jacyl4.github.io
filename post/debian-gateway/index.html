@@ -202,7 +202,8 @@ sysctl -p
 
 <p>ssh登录vps</p>
 
-<pre><code>wget --no-check-certificate https://raw.githubusercontent.com/jacyl4/de_GWD/master/de_GWD_Server/server -O ~/server &amp;&amp; chmod +x server &amp;&amp; ./server
+<pre><code>apt-get install -y curl
+curl -O https://raw.githubusercontent.com/jacyl4/de_GWD/master/de_GWD_Server/server &amp;&amp; chmod +x server &amp;&amp; ./server
 </code></pre>
 
 <p>选项2，套件安装过程中会弹出pihole安装对话框，服务端上不必要安装admin interface跟lighttpd。以方向键跟空格切换星号位置，其他一路回车。</p>
