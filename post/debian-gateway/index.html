@@ -220,18 +220,15 @@ curl -O https://raw.githubusercontent.com/jacyl4/de_GWD/master/de_GWD_Server/ser
 <p>选项4是因为安装过程中，会自动将vps改为静态ip，不再自动获取ip，万一的万一，以后需要换地址方便更改。</p>
 
 <ul>
-<li>补：脚本也支持 通过 [lnmp.org]()</li>
+<li>补：脚本也支持 通过 <a href="https://lnmp.org/auto.html">lnmp.org</a> 安装的现有LNMP环境上 搭建，自适应的。</li>
+<li>其他现有的LNMP环境很可能不支持</li>
 </ul>
 
-<p>证书位置在 /usr/local/nginx/conf/ssl</p>
+<p>LNMP环境下，证书位置在 /usr/local/nginx/conf/ssl</p>
 
-<p>nginx 配置文件在 /usr/local/nginx/conf/vhost/域名.conf</p>
-
-<p>emmmm,其实也就差不多只支持通过<a href="https://lnmp.org/">lnmp.org</a>一键脚本安装的LNMP环境啦。</p>
+<p>LNMP环境下，nginx 配置文件在 /usr/local/nginx/conf/vhost/域名.conf</p>
 
 <p>所以最简洁的，还是全新debian上开始安装服务端。。。</p>
-
-<p>安装完，重启一遍。</p>
 
 <h4 id="客户端">客户端：</h4>
 
@@ -241,7 +238,8 @@ apt-get install -y curl
 curl -O https://raw.githubusercontent.com/jacyl4/de_GWD/master/de_GWD_Client/client &amp;&amp; chmod +x client &amp;&amp; ./client
 </code></pre>
 
-<p>这边就没什么好讲的了，都是一路要输入就输入，要确认就回车的。</p>
+<p>一路回车下一步，
+pihole安装界面下，完全就是无脑回车。</p>
 
 <p>顺序安装选项 1.2.3.9</p>
 
