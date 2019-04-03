@@ -169,124 +169,116 @@ reboot
 
 再次ssh登录vps
 
-查看當前已經安裝的內核：
-</code></pre>
+sed -i '/net.core.default_qdisc/d' /etc/sysctl.conf
+sed -i '/net.ipv4.tcp_congestion_control/d' /etc/sysctl.conf
 
-<p>dpkg -l|grep linux-image</p>
+echo &quot;net.core.default_qdisc=fq&quot; &gt;&gt; /etc/sysctl.conf
+echo &quot;net.ipv4.tcp_congestion_control=bbrplus&quot; &gt;&gt; /etc/sysctl.conf
 
-<pre><code>刪除舊內核
-</code></pre>
+sysctl -p
 
-<p>apt-get purge -y linux-image-4.9.0-8-amd64
+
+如需删除旧内核，先查询內核名字：
+
+dpkg -l|grep linux-image
+
+apt-get purge -y linux-image-4.9.0-8-amd64
 update-grub
-reboot</p>
-
-<pre><code>再次ssh登录vps
 </code></pre>
 
-<p>sed -i &lsquo;/net.core.default_qdisc/d&rsquo; /etc/sysctl.conf
-sed -i &lsquo;/net.ipv4.tcp_congestion_control/d&rsquo; /etc/sysctl.conf</p>
+<p>到此bbrplus已生效。</p>
 
-<p>echo &ldquo;net.core.default_qdisc=fq&rdquo; &gt;&gt; /etc/sysctl.conf
-echo &ldquo;net.ipv4.tcp_congestion_control=bbrplus&rdquo; &gt;&gt; /etc/sysctl.conf</p>
+<h2 id="部署">部署</h2>
 
-<p>sysctl -p</p>
+<h4 id="服务端">服务端：</h4>
 
-<pre><code>到此bbrplus已生效。
+<p>ssh登录vps</p>
 
-
-## 部署
-#### 服务端：
-ssh登录vps
+<pre><code>apt-get install -y curl
+curl -O https://raw.githubusercontent.com/jacyl4/de_GWD/master/de_GWD_Server/server &amp;&amp; chmod +x server &amp;&amp; ./server
 </code></pre>
 
-<p>apt-get install -y curl
-curl -O <a href="https://raw.githubusercontent.com/jacyl4/de_GWD/master/de_GWD_Server/server">https://raw.githubusercontent.com/jacyl4/de_GWD/master/de_GWD_Server/server</a> &amp;&amp; chmod +x server &amp;&amp; ./server</p>
+<p>选项2，套件安装过程中会弹出pihole安装对话框，服务端上不必要安装admin interface跟lighttpd。以方向键跟空格切换星号位置，其他一路回车。</p>
 
-<pre><code>
-选项2，套件安装过程中会弹出pihole安装对话框，服务端上不必要安装admin interface跟lighttpd。以方向键跟空格切换星号位置，其他一路回车。
+<p>不必要的两个选项截图如下
+<img src="https://i.loli.net/2019/03/26/5c996ef762a0c.png" alt="Snipaste_2019-03-26_07-02-57" />
+<img src="https://i.loli.net/2019/03/26/5c996ef782d96.png" alt="Snipaste_2019-03-26_07-03-18" /></p>
 
-不必要的两个选项截图如下
-![Snipaste_2019-03-26_07-02-57](https://i.loli.net/2019/03/26/5c996ef762a0c.png)
-![Snipaste_2019-03-26_07-03-18](https://i.loli.net/2019/03/26/5c996ef782d96.png)
+<p>线程就是vps有几个核。</p>
 
-线程就是vps有几个核。
+<p><a href="https://www.uuidgenerator.net/">UUID生成网站</a></p>
 
-[UUID生成网站](https://www.uuidgenerator.net/)
+<p>“path”的话，可以选择uuid后几位 比如 /xxxxxx</p>
 
-“path”的话，可以选择uuid后几位 比如 /xxxxxx
+<p>安装完，重启一遍。就结束了。</p>
 
-安装完，重启一遍。就结束了。
+<p>选项3用于切换1.1.1.1的doh或者普通的8.8.8.8为上游dns。</p>
 
-选项3用于切换1.1.1.1的doh或者普通的8.8.8.8为上游dns。
+<p>选项4是因为安装过程中，会自动将vps改为静态ip，不再自动获取ip，万一的万一，以后需要换地址方便更改。</p>
 
-选项4是因为安装过程中，会自动将vps改为静态ip，不再自动获取ip，万一的万一，以后需要换地址方便更改。
+<ul>
+<li>补：脚本也支持 通过 <a href="https://lnmp.org/auto.html">lnmp.org</a> 安装的现有LNMP环境上 搭建，自适应的。</li>
+<li>其他现有的LNMP环境很可能不支持</li>
+</ul>
 
+<p>LNMP环境下，证书位置在 /usr/local/nginx/conf/ssl</p>
 
+<p>LNMP环境下，nginx 配置文件在 /usr/local/nginx/conf/vhost/域名.conf</p>
 
-* 补：脚本也支持 通过 [lnmp.org](https://lnmp.org/auto.html) 安装的现有LNMP环境上 搭建，自适应的。
-* 其他现有的LNMP环境很可能不支持
+<p>所以最简洁的，还是全新debian上开始安装服务端。。。</p>
 
-LNMP环境下，证书位置在 /usr/local/nginx/conf/ssl
+<h4 id="客户端">客户端：</h4>
 
-LNMP环境下，nginx 配置文件在 /usr/local/nginx/conf/vhost/域名.conf
-
-
-所以最简洁的，还是全新debian上开始安装服务端。。。
-
-#### 客户端：
+<pre><code>wget --no-check-certificate https://raw.githubusercontent.com/jacyl4/de_GWD/master/de_GWD_Client/client -O ~/client &amp;&amp; chmod +x client &amp;&amp; ./client
 </code></pre>
 
-<p>wget &ndash;no-check-certificate <a href="https://raw.githubusercontent.com/jacyl4/de_GWD/master/de_GWD_Client/client">https://raw.githubusercontent.com/jacyl4/de_GWD/master/de_GWD_Client/client</a> -O ~/client &amp;&amp; chmod +x client &amp;&amp; ./client</p>
+<p>UUID跟path 对应上面 服务端设置的。</p>
 
-<pre><code>UUID跟path 对应上面 服务端设置的。
+<p>pihole默认的google dns 受劫持影响很大，</p>
 
-pihole默认的google dns 受劫持影响很大，
+<p>为保证pihole快速顺利安装完，安装pihole时，dns 选最后一条 custom，并且指定为114
+<img src="https://i.loli.net/2019/03/31/5c9fdcdf3f931.png" alt="Snipaste_2019-03-31_02-58-20" />
+<img src="https://i.loli.net/2019/03/31/5c9fdce3a8191.png" alt="Snipaste_2019-03-31_02-39-59" /></p>
 
-为保证pihole快速顺利安装完，安装pihole时，dns 选最后一条 custom，并且指定为114
-![Snipaste_2019-03-31_02-58-20](https://i.loli.net/2019/03/31/5c9fdcdf3f931.png)
-![Snipaste_2019-03-31_02-39-59](https://i.loli.net/2019/03/31/5c9fdce3a8191.png)
+<p>选项3，可以用来重置pihole密码</p>
 
-选项3，可以用来重置pihole密码
+<p>选项9，DoH地址就填架过服务端的vps域名。只有一个的话，doh1 doh2填一样的。</p>
 
-选项9，DoH地址就填架过服务端的vps域名。只有一个的话，doh1 doh2填一样的。
+<p>。。。</p>
 
-。。。
+<p>装完后，去上级路由上，将dhcp分发的网关地址跟DNS地址 改成 此debian地址即可。</p>
 
-装完后，去上级路由上，将dhcp分发的网关地址跟DNS地址 改成 此debian地址即可。
+<p>arm平台armbian暂时没有合适的镜像源，还是比较慢的。</p>
 
-arm平台armbian暂时没有合适的镜像源，还是比较慢的。
+<p>暂时没有黑名单白名单功能。</p>
 
-暂时没有黑名单白名单功能。
+<p>默认运行在大陆白名单模式下。</p>
 
-默认运行在大陆白名单模式下。
+<p>以后修个简易web界面的时候，就把这功能做上。</p>
 
-以后修个简易web界面的时候，就把这功能做上。
+<hr />
 
-------------------------------------
-双端每日凌晨四点检测v2ray版本且有更新自动安装。
-客户端每日凌晨四点更新chnroute
+<p>双端每日凌晨四点检测v2ray版本且有更新自动安装。
+客户端每日凌晨四点更新chnroute</p>
 
-下面的测试没什么参考价值，受电脑性能影响很大，只能是刷着玩的时候看下页面加载反应。
+<p>下面的测试没什么参考价值，受电脑性能影响很大，只能是刷着玩的时候看下页面加载反应。</p>
 
-![Snipaste_2019-03-26_08-56-07](https://i.loli.net/2019/03/26/5c9978c0e4345.png)
-![Snipaste_2019-03-26_08-43-06](https://i.loli.net/2019/03/26/5c9976e13b6c4.png)
-![Snipaste_2019-03-26_08-41-49](https://i.loli.net/2019/03/26/5c9976e51490d.png)
-![Snipaste_2019-03-26_08-45-49](https://i.loli.net/2019/03/26/5c9976e340cc8.png)
-![Snipaste_2019-03-26_08-45-23](https://i.loli.net/2019/03/26/5c9976e1f0872.png)
-![Snipaste_2019-03-26_08-44-49](https://i.loli.net/2019/03/26/5c9976e7c84ae.png)
-![Snipaste_2019-03-26_08-44-23](https://i.loli.net/2019/03/26/5c9976dfbdcbe.png)
+<p><img src="https://i.loli.net/2019/03/26/5c9978c0e4345.png" alt="Snipaste_2019-03-26_08-56-07" />
+<img src="https://i.loli.net/2019/03/26/5c9976e13b6c4.png" alt="Snipaste_2019-03-26_08-43-06" />
+<img src="https://i.loli.net/2019/03/26/5c9976e51490d.png" alt="Snipaste_2019-03-26_08-41-49" />
+<img src="https://i.loli.net/2019/03/26/5c9976e340cc8.png" alt="Snipaste_2019-03-26_08-45-49" />
+<img src="https://i.loli.net/2019/03/26/5c9976e1f0872.png" alt="Snipaste_2019-03-26_08-45-23" />
+<img src="https://i.loli.net/2019/03/26/5c9976e7c84ae.png" alt="Snipaste_2019-03-26_08-44-49" />
+<img src="https://i.loli.net/2019/03/26/5c9976dfbdcbe.png" alt="Snipaste_2019-03-26_08-44-23" /></p>
 
-放个公益节点
+<p>放个公益节点</p>
 
-</code></pre>
-
-<p>香港魔方云，4-28 后失效。50mbps 400G
+<pre><code>香港魔方云，4-28 后失效。50mbps 400G
 可看netflix
 acccc.ooo
 4a3286e2-595e-49c6-9286-478531f43c49
 /f43c49
-```</p>
+</code></pre>
 
 <p>完。</p>
 
