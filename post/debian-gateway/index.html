@@ -171,22 +171,24 @@ reboot
 
 <p>再次ssh登录vps</p>
 
-<p>sed -i &lsquo;/net.core.default_qdisc/d&rsquo; /etc/sysctl.conf
-sed -i &lsquo;/net.ipv4.tcp_congestion_control/d&rsquo; /etc/sysctl.conf</p>
+<pre><code>sed -i '/net.core.default_qdisc/d' /etc/sysctl.conf
+sed -i '/net.ipv4.tcp_congestion_control/d' /etc/sysctl.conf
 
-<p>echo &ldquo;net.core.default_qdisc=fq&rdquo; &gt;&gt; /etc/sysctl.conf
-echo &ldquo;net.ipv4.tcp_congestion_control=bbrplus&rdquo; &gt;&gt; /etc/sysctl.conf</p>
+echo &quot;net.core.default_qdisc=fq&quot; &gt;&gt; /etc/sysctl.conf
+echo &quot;net.ipv4.tcp_congestion_control=bbrplus&quot; &gt;&gt; /etc/sysctl.conf
 
-<p>sysctl -p</p>
+sysctl -p
+</code></pre>
+
+<p>到此bbrplus已生效。</p>
 
 <p>如需删除旧内核，先查询內核名字：</p>
 
-<p>dpkg -l|grep linux-image</p>
+<pre><code>dpkg -l|grep linux-image
 
-<p>apt-get purge -y linux-image-4.9.0-8-amd64
-update-grub</p>
-
-<p>到此bbrplus已生效。</p>
+apt-get purge -y linux-image-4.9.0-8-amd64
+update-grub
+</code></pre>
 
 <h2 id="部署">部署</h2>
 
