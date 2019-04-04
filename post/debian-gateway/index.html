@@ -159,8 +159,7 @@ systemctl restart sshd
 
 <p>ssh登录vps</p>
 
-<pre><code>apt-get update
-apt-get -y upgrade
+<pre><code>apt-get update &amp;&amp; apt-get -y upgrade
 wget -N --no-check-certificate http://github.com/cx9208/Linux-NetSpeed/raw/master/bbrplus/debian-ubuntu/x64/linux-headers-4.14.91.deb
 wget -N --no-check-certificate http://github.com/cx9208/Linux-NetSpeed/raw/master/bbrplus/debian-ubuntu/x64/linux-image-4.14.91.deb
 dpkg -i linux-headers-4.14.91.deb
