@@ -200,7 +200,11 @@ echo &quot;net.ipv4.tcp_congestion_control=bbrplus&quot; &gt;&gt; /etc/sysctl.co
 sysctl -p
 </code></pre>
 
-<p>到此bbrplus已生效。</p>
+<p>查看下bbrplus是否已生效。</p>
+
+<pre><code>sysctl net.ipv4.tcp_available_congestion_control
+
+</code></pre>
 
 <p>如需删除旧内核，先查询內核名字：</p>
 
