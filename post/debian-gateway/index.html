@@ -104,32 +104,23 @@ if (!doNotTrack) {
                         <div class="post-content">
                             
 
-<p><strong>小白慎入！</strong></p>
-
-<p><strong>小白慎入！</strong></p>
-
-<p><strong>小白慎入！</strong></p>
-
 <p>曾在ros+lede方案的文中，就提到浏览器体验速度，尽看DNS解析的快慢。线路不好，可以bbrplus/锐速来凑。</p>
 
-<p>以前用LEDE作旁路，现直接跑在debian上当旁路了，纯粹是为了高效。</p>
+<p>以前用LEDE作旁路，现直接跑在debian上当旁路了，纯粹是为了高效极速。</p>
 
 <p>一键脚本分服务端跟客户端。集成pihole去广告，DoH加密DNS。
 <img src="https://i.loli.net/2019/04/19/5cb9b9980b216.png" alt="Snipaste_2019-04-19_20-05-25" />
 <img src="https://i.loli.net/2019/04/18/5cb7c7fe95fae.png" alt="Snipaste_2019-04-18_08-41-42" />
 <img src="https://i.loli.net/2019/04/18/5cb8431859246.png" alt="Snipaste_2019-04-18_15-54-50" />
-<img src="https://i.loli.net/2019/04/22/5cbdbbeee7589.png" alt="Snipaste_2019-04-22_21-04-12" /></p>
+<img src="https://i.loli.net/2019/04/22/5cbdbbeee7589.png" alt="Snipaste_2019-04-22_21-04-12" />
+服务端，就是需要个vps。</p>
 
-<p>服务端，就是需要个vps。</p>
+<p>客户端嘛，随便一个能跑debian的设备就行了，单网口就行。（支持 amd64 平台 以及 树莓派，香橙派 等 arm64 平台）</p>
 
-<p>客户端嘛，随便一个能跑debian的设备就行了，单网口就行。（支持 amd64 平台 以及 树莓派，香橙派 等 aarch64/arm64 平台）</p>
-
-<p>结构上嘛，就是v2+ws+tls，dns去污染方面用dns-over-https，dns缓存用pihole并且客户端服务端皆有缓存。
+<p>DNS解析分流逻辑：不做过多判断，iptables干脆利落地通过chnroute分成国内国外，国内都交给pihole解析并缓存，国外由v2嗅探解析，结果的缓存在vps端的pihole上。并且给pihole的添置了个DoH，以保证始终有个绝对干净的解析，况且pihole自身有对dns一定的校验。哪个环节都是一有结果就立即返回的，且都有缓存。
 （以往延用多年的chinadns去污染方案，需要国内国外dns都返回结果，才会作出判断，始终会有一定的延迟）</p>
 
-<p>无疑是目前最速的通用扶墙方案，不过需要本地有个跑debian的设备。</p>
-
-<p>流畅迅捷地加载页面元素，旨在实现最快速度地浏览页面。</p>
+<p>基本浏览性能无出其右，且今后很长一段时间，都不太可能会有效率更出众的方案。</p>
 
 <h4 id="1-以dd方式-通过一键脚本重新安装最新debian-可选">1. 以DD方式，通过一键脚本重新安装最新debian （可选）</h4>
 
