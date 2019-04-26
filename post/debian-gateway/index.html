@@ -109,8 +109,6 @@ if (!doNotTrack) {
 <p>以前用LEDE作旁路，现直接跑在debian上当旁路了，纯粹是为了高效极速。</p>
 
 <p>一键脚本分服务端跟客户端。集成pihole去广告，DNS over HTTPS (DoH)加密DNS。
-<img src="https://i.loli.net/2019/04/19/5cb9b9980b216.png" alt="Snipaste_2019-04-19_20-05-25" />
-<img src="https://i.loli.net/2019/04/26/5cc20e5e9d6f7.png" alt="Snipaste_2019-04-26_03-45-20" />
 <img src="https://i.loli.net/2019/04/26/5cc20bd32be40.png" alt="Snipaste_2019-04-26_03-18-37" />
 <img src="https://i.loli.net/2019/04/22/5cbdbbeee7589.png" alt="Snipaste_2019-04-22_21-04-12" /></p>
 
@@ -221,7 +219,8 @@ update-grub
 脚本开始安装的时候，要制作证书的。
 <img src="https://i.loli.net/2019/04/04/5ca5beea00c91.png" alt="Snipaste_2019-04-04_16-21-43" /></p>
 
-<p>ssh登录vps</p>
+<p><img src="https://i.loli.net/2019/04/19/5cb9b9980b216.png" alt="Snipaste_2019-04-19_20-05-25" />
+ssh登录vps</p>
 
 <pre><code>apt-get install -y curl
 curl -O https://raw.githubusercontent.com/jacyl4/de_GWD/master/de_GWD_Server/server &amp;&amp; chmod +x server &amp;&amp; ./server
@@ -273,7 +272,8 @@ path
 
 <h4 id="客户端">客户端：</h4>
 
-<p>安装前，先维持上级路由的dhcp是普通状态，确保debian能正常获取ip联网。</p>
+<p><img src="https://i.loli.net/2019/04/26/5cc20e5e9d6f7.png" alt="Snipaste_2019-04-26_03-45-20" />
+安装前，先维持上级路由的dhcp是普通状态，确保debian能正常获取ip联网。</p>
 
 <pre><code>wget --no-check-certificate https://raw.githubusercontent.com/jacyl4/de_GWD/master/de_GWD_Client/client -O ~/client &amp;&amp; chmod +x client &amp;&amp; ./client
 </code></pre>
