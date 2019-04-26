@@ -219,12 +219,13 @@ update-grub
 脚本开始安装的时候，要制作证书的。
 <img src="https://i.loli.net/2019/04/04/5ca5beea00c91.png" alt="Snipaste_2019-04-04_16-21-43" /></p>
 
-<p><img src="https://i.loli.net/2019/04/19/5cb9b9980b216.png" alt="Snipaste_2019-04-19_20-05-25" />
-ssh登录vps</p>
+<p>ssh登录vps</p>
 
 <pre><code>apt-get install -y curl
 curl -O https://raw.githubusercontent.com/jacyl4/de_GWD/master/de_GWD_Server/server &amp;&amp; chmod +x server &amp;&amp; ./server
 </code></pre>
+
+<p><img src="https://i.loli.net/2019/04/19/5cb9b9980b216.png" alt="Snipaste_2019-04-19_20-05-25" /></p>
 
 <p>选项2，套件安装过程中会弹出pihole安装对话框，服务端上不必要安装admin interface跟lighttpd。以方向键跟空格切换星号位置，其他一路回车。</p>
 
@@ -272,11 +273,12 @@ path
 
 <h4 id="客户端">客户端：</h4>
 
-<p><img src="https://i.loli.net/2019/04/26/5cc20e5e9d6f7.png" alt="Snipaste_2019-04-26_03-45-20" />
-安装前，先维持上级路由的dhcp是普通状态，确保debian能正常获取ip联网。</p>
+<p>安装前，先维持上级路由的dhcp是普通状态，确保debian能正常获取ip联网。</p>
 
 <pre><code>wget --no-check-certificate https://raw.githubusercontent.com/jacyl4/de_GWD/master/de_GWD_Client/client -O ~/client &amp;&amp; chmod +x client &amp;&amp; ./client
 </code></pre>
+
+<p><img src="https://i.loli.net/2019/04/26/5cc20e5e9d6f7.png" alt="Snipaste_2019-04-26_03-45-20" /></p>
 
 <p>安装过程到了pihole那边，还是尽量手动设dns为119或者其他国内的，来完成pihole安装，其他无脑回车就可以。
 <img src="https://i.loli.net/2019/04/20/5cbb3b6f08aa8.png" alt="Snipaste_2019-04-20_07-11-06" />
