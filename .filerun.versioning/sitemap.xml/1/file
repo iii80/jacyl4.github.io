@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+  xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  
+  <url>
+    <loc>https://jacyl4.github.io/post/debian-gateway/</loc>
+    <lastmod>2019-03-26T07:12:00+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://jacyl4.github.io/post/hackintosh-z370n-wifi-cfg-lock/</loc>
+    <lastmod>2018-12-20T01:00:00+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://jacyl4.github.io/post/ros-openwrt-pihole-burstlink3/</loc>
+    <lastmod>2018-12-19T04:50:00+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://jacyl4.github.io/post/ros-openwrt-burstlink2/</loc>
+    <lastmod>2018-12-19T02:32:00+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://jacyl4.github.io/post/ros-openwrt-burstlink1/</loc>
+    <lastmod>2018-12-19T01:45:00+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://jacyl4.github.io/about/</loc>
+    <lastmod>2018-12-09T00:20:22+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://jacyl4.github.io/categories/</loc>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://jacyl4.github.io/post/</loc>
+    <lastmod>2019-03-26T07:12:00+08:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://jacyl4.github.io/tags/</loc>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://jacyl4.github.io/</loc>
+    <lastmod>2019-03-26T07:12:00+08:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://jacyl4.github.io/archives/</loc>
+  </url>
+  
+  <url>
+    <loc>https://jacyl4.github.io/categories/%E7%94%B5%E8%84%91/</loc>
+    <lastmod>2019-03-26T07:12:00+08:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://jacyl4.github.io/tags/%E8%B7%AF%E7%94%B1/</loc>
+    <lastmod>2019-03-26T07:12:00+08:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://jacyl4.github.io/tags/%E9%BB%91%E8%8B%B9%E6%9E%9C/</loc>
+    <lastmod>2018-12-20T01:00:00+08:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+</urlset>
