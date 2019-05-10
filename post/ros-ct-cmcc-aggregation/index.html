@@ -7,20 +7,20 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>【ROS&#43;OpenWrt&#43;Pi-hole合用】双线聚合，真旁路，超绝加速Burst Link【DNS补充篇】 | 十四-Blog</title>
-    <meta property="og:title" content="【ROS&#43;OpenWrt&#43;Pi-hole合用】双线聚合，真旁路，超绝加速Burst Link【DNS补充篇】 - 十四-Blog">
+    <title>RouterOS 电信移动 聚合 精简说明 | 十四-Blog</title>
+    <meta property="og:title" content="RouterOS 电信移动 聚合 精简说明 - 十四-Blog">
     <meta property="og:type" content="article">
         
-    <meta property="article:published_time" content="2018-12-19T04:50:00&#43;08:00">
+    <meta property="article:published_time" content="2018-12-18T00:00:00&#43;08:00">
         
         
-    <meta property="article:modified_time" content="2018-12-19T04:50:00&#43;08:00">
+    <meta property="article:modified_time" content="2018-12-18T00:00:00&#43;08:00">
         
-    <meta name="Keywords" content="[路由 ros routeros OpenWrt LEDE 旁路 Pi-hole]">
-    <meta name="description" content="【ROS&#43;OpenWrt&#43;Pi-hole合用】双线聚合，真旁路，超绝加速Burst Link【DNS补充篇】">
+    <meta name="Keywords" content="[ros routeros 电信移动 聚合]">
+    <meta name="description" content="RouterOS 电信移动 聚合 精简说明">
         
     <meta name="author" content="JacyL4">
-    <meta property="og:url" content="https://jacyl4.github.io/post/ros-openwrt-pihole-burstlink3/">
+    <meta property="og:url" content="https://jacyl4.github.io/post/ros-ct-cmcc-aggregation/">
     <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
 
     <link rel="stylesheet" href="/css/normalize.css">
@@ -88,10 +88,10 @@ if (!doNotTrack) {
                 <div class="res-cons">
                     <article class="post">
                         <header>
-                            <h1 class="post-title">【ROS&#43;OpenWrt&#43;Pi-hole合用】双线聚合，真旁路，超绝加速Burst Link【DNS补充篇】</h1>
+                            <h1 class="post-title">RouterOS 电信移动 聚合 精简说明</h1>
                         </header>
                         <date class="post-meta meta-date">
-                            2018年12月19日 -
+                            2018年12月18日 -
                         </date>
                         
                         <div class="post-meta meta-category">
@@ -102,152 +102,129 @@ if (!doNotTrack) {
                         
                         
                         <div class="post-content">
-                            <p>独立于前两篇，添置Pi-hole之后，粗略写一下。</p>
+                            <p>前期的ip address, DHCP服务, pppoe拨号就不复述了</p>
 
-<p>Pi-hole这个项目还是很推荐的。就算不用软路由，都非常推荐局域网内挂个Pi-hole，作为指定DNS使用。能让浏览器体验好不少。</p>
+<p>电信pppoe拨号：pppoe-CT</p>
 
-<p><img src="https://i.loli.net/2019/01/13/5c3a80b49b9e0.jpg" alt="Snipaste_2019-01-13_08-04-20gallery1" /></p>
+<p>移动pppoe拨号：pppoe-CMCC</p>
 
-<p>在ROS跟OpenWrt运行着的esxi内，增建了一个小Debian，运行<a href="https://pi-hole.net">Pi-hole</a> 来接管DNS解析的事情，顺便完成DNS缓存与去广告功能。</p>
+<p>本地网口桥接：bridge1</p>
 
-<p>首先准备好Debian系统映像
-<a href="https://www.debian.org/distrib/">获取 Debian</a>
-我是用的小型安装映像 64-bit PC netinst iso</p>
+<p>局域网ip段：10.0.0.0/24</p>
 
-<p><img src="https://i.loli.net/2019/01/10/5c365d577c86f.jpg" alt="Snipaste_2019-01-10_04-00-35gallery3" />
-<img src="https://i.loli.net/2019/01/10/5c365d5bc5633.jpg" alt="Snipaste_2019-01-10_04-02-39gallery2" />
-<img src="https://i.loli.net/2019/01/10/5c365d605b21b.jpg" alt="Snipaste_2019-01-10_04-03-22gallery1" />
-<img src="https://i.loli.net/2019/01/10/5c365d92a44e8.jpg" alt="Snipaste_2019-01-10_04-07-58gallery1" /></p>
+<p>###1.建立防火墙基础防护</p>
 
-<p>基本一路下一步，提醒建密码就输密码，提醒建普通用户就建。
-提示扫描其他CD/DVD就选“no”
-接着还有提示要装什么包的，也是选“no”
-然后提示要装GRUB，那就点“yes”装一个吧，选择装在/dev/sda上
-不久后，就Finish，点continue就重启了。到此，装完Debian</p>
+<pre><code>/ip firewall filter
+add chain=input in-interface=pppoe-CT protocol=udp dst-port=53 action=drop
+add chain=input in-interface=pppoe-CT protocol=tcp dst-port=53 action=drop
+add chain=input in-interface=pppoe-CMCC protocol=udp dst-port=53 action=drop
+add chain=input in-interface=pppoe-CMCC protocol=tcp dst-port=53 action=drop
 
-<p>查看到Debian虚拟机所用的网卡的MAC地址，回到DHCP服务器所在的ROS，给它分配个固定ip。比如10.0.0.4
-<img src="https://i.loli.net/2019/01/20/5c437687b6b8e.jpg" alt="Snipaste_2019-01-20_02-35-21gallery4" />
-<img src="https://i.loli.net/2019/01/20/5c43769023945.jpg" alt="Snipaste_2019-01-20_02-55-40gallery3" /></p>
+add chain=input connection-state=invalid action=drop comment=&quot;Drop Invalid connections&quot;
+add chain=input connection-state=established action=accept comment=&quot;Allow Established connections&quot;
+add chain=input protocol=icmp action=accept comment=&quot;Allow ICMP&quot;
+add chain=input src-address=10.0.0.0/24 action=accept in-interface=bridge1
+add chain=input action=drop comment=&quot;Drop everything else&quot;
 
-<p>打开终端 ssh登上去</p>
+add chain=output action=accept comment=&quot;accept everything&quot;
 
-<pre><code>ssh jacyl4@10.0.0.4
+add chain=forward connection-state=invalid action=drop comment=&quot;Drop Invalid connections&quot;
+add chain=forward connection-state=established action=accept comment=&quot;Allow Established connections&quot;
+add chain=forward connection-state=related action=accept comment=&quot;allow related connections&quot;
+
+add chain=forward protocol=tcp action=jump jump-target=tcp
+add chain=forward protocol=udp action=jump jump-target=udp
+add chain=forward protocol=icmp action=jump jump-target=icmp
 </code></pre>
 
-<pre><code>su
+<p>上述代码中，
+<code>add chain=input src-address=10.0.0.0/24 action=accept in-interface=bridge1</code>
+这一行内的10.0.0.0/24就是，本地局域网的ip段</p>
+
+<p>###2.建立防火墙NAT伪装</p>
+
+<pre><code>/ip firewall nat
+add chain=srcnat out-interface=pppoe-CT action=masquerade
+add chain=srcnat out-interface=pppoe-CMCC action=masquerade
 </code></pre>
 
-<p>刚安装的Debian太干净了，还得先安个curl</p>
+<p>###3.分类address-list</p>
 
-<pre><code>apt-get install curl
+<pre><code>/ip firewall address-list
+add address=10.0.0.0/24 list=local comment=local
 </code></pre>
 
-<p>一行简单的命令，就可以开启安装Pi-hole。</p>
+<p>固定移动跑的好的v2节点跑在移动线上，先获得v2节点域名解析出来的ip，比如111.111.111.111</p>
 
-<pre><code>curl -sSL https://install.pi-hole.net | bash
+<pre><code>/ip firewall address-list
+add address=111.111.111.111/32 list=v2ct comment=v2node1
 </code></pre>
 
-<p>很快就进入安装状态的。
-<img src="https://i.loli.net/2019/01/20/5c436b69d0d3d.jpg" alt="Snipaste_2019-01-20_02-21-12gallery1" />
-<img src="https://i.loli.net/2019/01/20/5c436bdf39d46.jpg" alt="Snipaste_2019-01-20_02-21-23gallery2" /></p>
+<p>固定移动跑的好的v2节点跑在移动线上，先获得v2节点域名解析出来的ip，比如222.222.222.222</p>
 
-<p>一路回车</p>
-
-<p><img src="https://i.loli.net/2019/01/20/5c436b78312fb.jpg" alt="Snipaste_2019-01-20_02-21-38gallery3" />
-填两个第三方DNS地址先吧。主要看当地，哪个ping低，就优先填哪个。
-<img src="https://i.loli.net/2019/01/20/5c436b8a75851.jpg" alt="Snipaste_2019-01-20_02-21-53gallery4" /></p>
-
-<p>然后又是一路ok，接着等它部署，时间不短。直到看到下图
-<img src="https://i.loli.net/2019/01/20/5c4376a5ce34a.jpg" alt="Snipaste_2019-01-20_03-11-03gallery2" /></p>
-
-<p>按个回车，看到命令行界面
-<img src="https://i.loli.net/2019/01/20/5c4376acb567b.jpg" alt="Snipaste_2019-01-20_03-11-15gallery1" /></p>
-
-<p>给Pi-hole换个密码</p>
-
-<pre><code>sudo pihole -a -p
+<pre><code>/ip firewall address-list
+add address=222.222.222.222/32 list=v2cmcc comment=v2node2
 </code></pre>
 
-<p>然后就可以通过<a href="http://10.0.0.4/admin">http://10.0.0.4/admin</a>访问Pi-hole了。</p>
+<p>动态策略路由进行电信移动分流的ip段，由我在Github上的脚本生成导入ros</p>
 
-<p>下面再回到终端，自定义一下过滤规则</p>
-
-<pre><code>nano /etc/pihole/adlists.list
+<pre><code>/file remove [find name=&quot;ros-dpbr-CT-CMCC.rsc&quot;]
+/ip firewall address-list remove [find list=&quot;dpbr-CT&quot;]
+/ip firewall address-list remove [find list=&quot;dpbr-CMCC&quot;]
+/tool fetch url=&quot;https://raw.githubusercontent.com/jacyl4/ros-pbr-CT-CMCC/master/ros-dpbr-CT-CMCC.rsc&quot;
+/import ros-dpbr-CT-CMCC.rsc
 </code></pre>
 
-<p>把下面几行添进去。</p>
+<p>把上述代码放入ros的system -&gt; scripts
+然后点击Run Script自动会往 Firewall 的 Address Lists 页里生成ip段</p>
 
-<pre><code>http://someonewhocares.org/hosts/hosts
-https://raw.githubusercontent.com/StevenBlack/hosts/master/data/StevenBlack/hosts
-https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts
-http://sysctl.org/cameleon/hosts
-http://www.malwaredomainlist.com/hostslist/hosts.txt
-http://adaway.org/hosts.txt
-http://winhelp2002.mvps.org/hosts.txt
-https://github.com/jacyl4/pihole-adblock.hosts/raw/master/adblock.hosts
+<p>###4.设置ros route</p>
+
+<pre><code>/ip route
+add dst-address=0.0.0.0/0 gateway=pppoe-CT check-gateway=ping distance=1
+add dst-address=0.0.0.0/0 gateway=pppoe-CMCC check-gateway=ping distance=1
+add dst-address=0.0.0.0/0 gateway=pppoe-CT check-gateway=ping distance=1 routing-mark=CT
+add dst-address=0.0.0.0/0 gateway=pppoe-CMCC check-gateway=ping distance=1 routing-mark=CMCC
+
+/ip route
+add dst-address=0.0.0.0/0 gateway=pppoe-CT check-gateway=ping distance=1 routing-mark=&quot;DNS traffic&quot;
+add dst-address=0.0.0.0/0 gateway=pppoe-CMCC check-gateway=ping distance=2 routing-mark=&quot;DNS traffic&quot;
 </code></pre>
 
-<p><img src="https://i.loli.net/2019/01/13/5c3a86e8108f4.png" alt="Snipaste_2019-01-13_08-31-15" />
-ctrl+x 保存退出</p>
+<p>###5.ros Firewall Mangle 页进行pcc聚合</p>
 
-<p>更新规则</p>
+<pre><code>/ip firewall mangle
+add chain=prerouting src-address-list=local dst-address-list=local action=accept comment=&quot;local&quot;
 
-<pre><code>pihole -g
+/ip firewall mangle
+add chain=prerouting src-address=10.0.0.0/24  protocol=udp dst-port=53 action=mark-routing new-routing-mark=&quot;DNS traffic&quot; passthrough=no  comment=&quot;DNS traffic&quot;
+add chain=prerouting src-address=10.0.0.0/24  protocol=tcp dst-port=53 action=mark-routing new-routing-mark=&quot;DNS traffic&quot; passthrough=no 
+
+add chain=prerouting src-address=10.0.0.0/24 dst-address-list=v2ct action=mark-routing new-routing-mark=CT passthrough=no comment=v2ct
+add chain=prerouting src-address=10.0.0.0/24 dst-address-list=v2cmcc action=mark-routing new-routing-mark=CMCC passthrough=no comment=v2cmcc
+
+add chain=prerouting src-address=10.0.0.0/24 dst-address-list=dpbr-CT action=mark-routing new-routing-mark=CT passthrough=no comment=ros-dpbr-CT-CMCC
+add chain=prerouting src-address=10.0.0.0/24 dst-address-list=dpbr-CMCC action=mark-routing new-routing-mark=CMCC passthrough=no
+
+/ip firewall mangle
+add chain=prerouting in-interface=pppoe-CT connection-mark=no-mark action=mark-connection new-connection-mark=CT_conn comment=in
+add chain=prerouting in-interface=pppoe-CMCC connection-mark=no-mark action=mark-connection new-connection-mark=CMCC_conn
+
+add chain=prerouting in-interface=bridge1 connection-mark=no-mark per-connection-classifier=both-addresses:2/0 dst-address-type=!local action=mark-connection new-connection-mark=CT_conn comment=PCC
+add chain=prerouting in-interface=bridge1 connection-mark=no-mark per-connection-classifier=both-addresses:2/1 dst-address-type=!local action=mark-connection new-connection-mark=CMCC_conn
+
+add chain=prerouting in-interface=bridge1 connection-mark=CT_conn action=mark-routing new-routing-mark=CT passthrough=no comment=&quot;dynamic pbr&quot;
+add chain=prerouting in-interface=bridge1 connection-mark=CMCC_conn action=mark-routing new-routing-mark=CMCC passthrough=no
+
+add chain=output connection-mark=CT_conn action=mark-routing new-routing-mark=CT comment=out
+add chain=output connection-mark=CMCC_conn action=mark-routing new-routing-mark=CMCC
 </code></pre>
 
-<p>如果有需要在局域网内固定域名解析到固定ip的，比如nas地址，可以如下添加</p>
-
-<pre><code>pihole -a hostrecord xxxxxxx.f3322.net 10.0.0.14
-</code></pre>
-
-<p>以后需要删除固定解析的话，命令如下</p>
-
-<pre><code>pihole -a hostrecord
-Removing host record
-</code></pre>
-
-<p>最后，未来需要更新Pi-hole的话，还是需要以root用户运行命令如下</p>
-
-<pre><code>pihole -up
-</code></pre>
-
-<p>至此，Pi-hole已建设完毕了。</p>
-
-<p>然后再把之前ROS+OpenWrt方案的路由DNS 指向Pi-hole
-<img src="https://i.loli.net/2019/01/10/5c365f4663615.jpg" alt="Snipaste_2019-01-10_04-39-19gallery04" /></p>
-
-<p>ROS的DNS缓存功能可以弃用了
-<img src="https://i.loli.net/2019/01/10/5c365f4e90cf8.jpg" alt="Snipaste_2019-01-10_04-39-48gallery02" /></p>
-
-<p><img src="https://i.loli.net/2019/01/13/5c3a7d3d1d123.jpg" alt="Snipaste_2019-01-13_07-49-49gallery1" /></p>
-
-<p><img src="https://i.loli.net/2019/01/13/5c3a7c99d0c03.jpg" alt="Snipaste_2019-01-13_07-46-53gallery1" /></p>
-
-<p>后记：
-Pi-hole官方说使用的时候，最好是开启DHCP服务器功能，作为局域网内唯一的DHCP服务器。其他设备关DHCP服务器功能。对了，记得给Pi-hole设个固定ip地址，不然找不到了，可以通过在Debian网卡上设固定地址。</p>
-
-<p>实在想用主路由ros的dhcp服务器功能的话，尽量启用Pi-hole的 Conditional Forwarding 功能，填好dhcp所在的主路由地址跟搜索域。</p>
-
-<p>局域网内所有的设备都用Pi-hole作为dns最大化利用本地DNS缓存的时候，由于直接指向了Pi-hole地址，所以dns防污染能力有限，填Custom DNS时，需要挑选一下。比如我用的时候就发现1.1.1.1会给我造成一些不知明的解析错误。同时，Pi-hole的网关是Openwrt，可以走国外线路的，所以用8.8.8.8也是可以用的，只是延迟高点。</p>
-
-<p>总之，在DNS相关方面，Pi-hole确实非常好用，特别推荐。</p>
+<p>###6.最后ros的dns设置，简单指向de_GWD</p>
 
                         </div>
 
                         
-
-<div class="post-archive">
-    <h2>See Also</h2>
-    <ul class="listing">
-        
-        <li><a href="/post/ros-openwrt-burstlink2/">【ROS&#43;OpenWrt合用】双线聚合，真旁路，超绝加速Burst Link【下篇】</a></li>
-        
-        <li><a href="/post/ros-openwrt-burstlink1/">【ROS&#43;OpenWrt合用】双线聚合，真旁路，超绝加速Burst Link【上篇】</a></li>
-        
-        <li><a href="/post/ros-ct-cmcc-aggregation/">RouterOS 电信移动 聚合 精简说明</a></li>
-        
-    </ul>
-</div>
 
 
                         <div class="post-meta meta-tags">

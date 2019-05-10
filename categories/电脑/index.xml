@@ -56,5 +56,14 @@
       <description>先上个拓补图吧 以前写的时候没地方放，发在了CHH上，现在hugo博客相见恨晚地搭完了，就搬回来吧。 一直挺嫌弃硬路由的死板，性能僝弱。 比如我有</description>
     </item>
     
+    <item>
+      <title>RouterOS 电信移动 聚合 精简说明</title>
+      <link>https://jacyl4.github.io/post/ros-ct-cmcc-aggregation/</link>
+      <pubDate>Tue, 18 Dec 2018 00:00:00 +0800</pubDate>
+      
+      <guid>https://jacyl4.github.io/post/ros-ct-cmcc-aggregation/</guid>
+      <description>前期的ip address, DHCP服务, pppoe拨号就不复述了 电信pppoe拨号：pppoe-CT 移动pppoe拨号：pppoe-CMCC 本地网口桥接：</description>
+    </item>
+    
   </channel>
 </rss>
