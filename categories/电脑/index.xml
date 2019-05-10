@@ -6,10 +6,19 @@
     <description>Recent content in 电脑 on 十四-Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-CN</language>
-    <lastBuildDate>Tue, 26 Mar 2019 07:12:00 +0800</lastBuildDate>
+    <lastBuildDate>Fri, 10 May 2019 15:21:00 +0800</lastBuildDate>
     
 	<atom:link href="https://jacyl4.github.io/categories/%E7%94%B5%E8%84%91/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>RouterOS 电信移动 聚合 精简说明</title>
+      <link>https://jacyl4.github.io/post/ros-ct-cmcc-aggregation/</link>
+      <pubDate>Fri, 10 May 2019 15:21:00 +0800</pubDate>
+      
+      <guid>https://jacyl4.github.io/post/ros-ct-cmcc-aggregation/</guid>
+      <description>前期的ip address, DHCP服务, pppoe拨号就不复述了 电信pppoe拨号：pppoe-CT 移动pppoe拨号：pppoe-CMCC 本地网口桥接：</description>
+    </item>
     
     <item>
       <title>Debian网关_v2ray透明代理_旁路科学上网_Burst Link</title>
@@ -54,15 +63,6 @@
       
       <guid>https://jacyl4.github.io/post/ros-openwrt-burstlink1/</guid>
       <description>先上个拓补图吧 以前写的时候没地方放，发在了CHH上，现在hugo博客相见恨晚地搭完了，就搬回来吧。 一直挺嫌弃硬路由的死板，性能僝弱。 比如我有</description>
-    </item>
-    
-    <item>
-      <title>RouterOS 电信移动 聚合 精简说明</title>
-      <link>https://jacyl4.github.io/post/ros-ct-cmcc-aggregation/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://jacyl4.github.io/post/ros-ct-cmcc-aggregation/</guid>
-      <description>前期的ip address, DHCP服务, pppoe拨号就不复述了 电信pppoe拨号：pppoe-CT 移动pppoe拨号：pppoe-CMCC 本地网口桥接：</description>
     </item>
     
   </channel>
