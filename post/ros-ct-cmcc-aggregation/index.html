@@ -114,7 +114,7 @@ if (!doNotTrack) {
 
 <p>局域网ip段：10.0.0.0/24</p>
 
-<h3 id="1-建立防火墙基础防护">1.建立防火墙基础防护</h3>
+<h3 id="建立防火墙基础防护">建立防火墙基础防护</h3>
 
 <pre><code>/ip firewall filter
 add chain=input in-interface=pppoe-CT protocol=udp dst-port=53 action=drop
@@ -143,14 +143,14 @@ add chain=forward protocol=icmp action=jump jump-target=icmp
 <code>add chain=input src-address=10.0.0.0/24 action=accept in-interface=bridge1</code>
 这一行内的10.0.0.0/24就是，本地局域网的ip段</p>
 
-<h3 id="2-建立防火墙nat伪装">2.建立防火墙NAT伪装</h3>
+<h3 id="建立防火墙nat伪装">建立防火墙NAT伪装</h3>
 
 <pre><code>/ip firewall nat
 add chain=srcnat out-interface=pppoe-CT action=masquerade
 add chain=srcnat out-interface=pppoe-CMCC action=masquerade
 </code></pre>
 
-<h3 id="3-分类address-list">3.分类address-list</h3>
+<h3 id="分类address-list">分类address-list</h3>
 
 <pre><code>/ip firewall address-list
 add address=10.0.0.0/24 list=local comment=local
@@ -180,7 +180,7 @@ add address=222.222.222.222/32 list=v2cmcc comment=v2node2
 <p>把上述代码放入ros的system -&gt; scripts
 然后点击Run Script自动会往 Firewall 的 Address Lists 页里生成ip段</p>
 
-<h3 id="4-设置ros-route">4.设置ros route</h3>
+<h3 id="设置ros-route">设置ros route</h3>
 
 <pre><code>/ip route
 add dst-address=0.0.0.0/0 gateway=pppoe-CT check-gateway=ping distance=1
@@ -193,7 +193,7 @@ add dst-address=0.0.0.0/0 gateway=pppoe-CT check-gateway=ping distance=1 routing
 add dst-address=0.0.0.0/0 gateway=pppoe-CMCC check-gateway=ping distance=2 routing-mark=&quot;DNS traffic&quot;
 </code></pre>
 
-<h3 id="5-ros-firewall-mangle-页进行pcc聚合">5.ros Firewall Mangle 页进行pcc聚合</h3>
+<h3 id="ros-firewall-mangle-页进行pcc聚合">ros Firewall Mangle 页进行pcc聚合</h3>
 
 <pre><code>/ip firewall mangle
 add chain=prerouting src-address-list=local dst-address-list=local action=accept comment=&quot;local&quot;
@@ -222,7 +222,7 @@ add chain=output connection-mark=CT_conn action=mark-routing new-routing-mark=CT
 add chain=output connection-mark=CMCC_conn action=mark-routing new-routing-mark=CMCC
 </code></pre>
 
-<h3 id="6-最后ros的dns设置-简单指向de-gwd">6.最后ros的dns设置，简单指向de_GWD</h3>
+<h3 id="最后ros的dns设置-简单指向de-gwd">最后ros的dns设置，简单指向de_GWD</h3>
 
                         </div>
 
