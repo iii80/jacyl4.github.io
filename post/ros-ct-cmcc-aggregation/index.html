@@ -156,7 +156,7 @@ add chain=srcnat out-interface=pppoe-CMCC action=masquerade
 add address=10.0.0.0/24 list=local comment=local
 </code></pre>
 
-<p>固定移动跑的好的v2节点跑在移动线上，先获得v2节点域名解析出来的ip，比如111.111.111.111</p>
+<p>固定电信跑的好的v2节点跑在电信线上，先获得v2节点域名解析出来的ip，比如111.111.111.111</p>
 
 <pre><code>/ip firewall address-list
 add address=111.111.111.111/32 list=v2ct comment=v2node1
