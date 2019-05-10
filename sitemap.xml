@@ -28,11 +28,6 @@
   </url>
   
   <url>
-    <loc>https://jacyl4.github.io/post/ros-ct-cmcc-aggregation/</loc>
-    <lastmod>2018-12-18T00:00:00+08:00</lastmod>
-  </url>
-  
-  <url>
     <loc>https://jacyl4.github.io/about/</loc>
     <lastmod>2018-12-09T00:20:22+08:00</lastmod>
   </url>
@@ -46,6 +41,10 @@
     <loc>https://jacyl4.github.io/post/</loc>
     <lastmod>2019-03-26T07:12:00+08:00</lastmod>
     <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://jacyl4.github.io/post/ros-ct-cmcc-aggregation/</loc>
   </url>
   
   <url>
