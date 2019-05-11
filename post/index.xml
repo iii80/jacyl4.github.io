@@ -26,7 +26,7 @@
       <pubDate>Tue, 26 Mar 2019 07:12:00 +0800</pubDate>
       
       <guid>https://jacyl4.github.io/post/debian-gateway/</guid>
-      <description>Github 曾在ros+lede方案的文中，就提到浏览器体验速度，尽看DNS解析的快慢。线路不好，可以bbrplus/锐速来凑。 以前用LEDE作旁路，</description>
+      <description>Github 专注旁路，运行于debian的一个完善套件带界面，纯粹是为了追求更高效更极速，可以说一骑绝尘。 DNS去污染方式有别于以往各种， 支持普通x8</description>
     </item>
     
     <item>
