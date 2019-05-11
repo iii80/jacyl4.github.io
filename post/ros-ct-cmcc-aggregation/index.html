@@ -180,20 +180,7 @@ add address=222.222.222.222/32 list=v2cmcc comment=v2node2
 <p>把上述代码放入ros的system -&gt; scripts
 然后点击Run Script自动会往 Firewall 的 Address Lists 页里生成ip段</p>
 
-<h3 id="4-设置ros-route">4.设置ros route</h3>
-
-<pre><code>/ip route
-add dst-address=0.0.0.0/0 gateway=pppoe-CT check-gateway=ping distance=1
-add dst-address=0.0.0.0/0 gateway=pppoe-CMCC check-gateway=ping distance=1
-add dst-address=0.0.0.0/0 gateway=pppoe-CT check-gateway=ping distance=1 routing-mark=CT
-add dst-address=0.0.0.0/0 gateway=pppoe-CMCC check-gateway=ping distance=1 routing-mark=CMCC
-
-/ip route
-add dst-address=0.0.0.0/0 gateway=pppoe-CT check-gateway=ping distance=1 routing-mark=&quot;DNS traffic&quot;
-add dst-address=0.0.0.0/0 gateway=pppoe-CMCC check-gateway=ping distance=2 routing-mark=&quot;DNS traffic&quot;
-</code></pre>
-
-<h3 id="5-ros-firewall-mangle-页进行pcc聚合">5.ros Firewall Mangle 页进行pcc聚合</h3>
+<h3 id="4-ros-firewall-mangle-页进行pcc聚合">4.ros Firewall Mangle 页进行pcc聚合</h3>
 
 <pre><code>/ip firewall mangle
 add chain=prerouting src-address=10.0.0.0/24  protocol=udp dst-port=53 action=mark-routing new-routing-mark=&quot;DNS traffic&quot; passthrough=no  comment=&quot;DNS traffic&quot;
@@ -220,6 +207,19 @@ add chain=prerouting in-interface=bridge1 connection-mark=CMCC_conn action=mark-
 
 add chain=output connection-mark=CT_conn action=mark-routing new-routing-mark=CT comment=out
 add chain=output connection-mark=CMCC_conn action=mark-routing new-routing-mark=CMCC
+</code></pre>
+
+<h3 id="5-设置ros-route">5.设置ros route</h3>
+
+<pre><code>/ip route
+add dst-address=0.0.0.0/0 gateway=pppoe-CT check-gateway=ping distance=1
+add dst-address=0.0.0.0/0 gateway=pppoe-CMCC check-gateway=ping distance=1
+add dst-address=0.0.0.0/0 gateway=pppoe-CT check-gateway=ping distance=1 routing-mark=CT
+add dst-address=0.0.0.0/0 gateway=pppoe-CMCC check-gateway=ping distance=1 routing-mark=CMCC
+
+/ip route
+add dst-address=0.0.0.0/0 gateway=pppoe-CT check-gateway=ping distance=1 routing-mark=&quot;DNS traffic&quot;
+add dst-address=0.0.0.0/0 gateway=pppoe-CMCC check-gateway=ping distance=2 routing-mark=&quot;DNS traffic&quot;
 </code></pre>
 
 <h3 id="6-最后ros的dns设置-简单指向de-gwd">6.最后ros的dns设置，简单指向de_GWD</h3>
