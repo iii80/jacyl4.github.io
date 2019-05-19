@@ -185,11 +185,15 @@ add address=222.222.222.222/32 list=v2cmcc comment=v2node2
 <pre><code>/ip firewall mangle
 add chain=prerouting src-address-list=local dst-address-list=local action=accept comment=&quot;local&quot;
 
+/ip firewall mangle
+add chain=prerouting src-address=10.0.0.0/24  protocol=udp dst-port=53 action=mark-routing new-routing-mark=&quot;DNS traffic&quot; passthrough=no  comment=&quot;DNS traffic&quot;
+add chain=prerouting src-address=10.0.0.0/24  protocol=tcp dst-port=53 action=mark-routing new-routing-mark=&quot;DNS traffic&quot; passthrough=no 
+
 add chain=prerouting src-address=10.0.0.0/24 dst-address-list=v2ct action=mark-routing new-routing-mark=CT passthrough=no comment=v2ct
 add chain=prerouting src-address=10.0.0.0/24 dst-address-list=v2cmcc action=mark-routing new-routing-mark=CMCC passthrough=no comment=v2cmcc
 
-add chain=prerouting src-address=10.0.0.0/24 dst-address-list=dpbr-CT action=mark-routing new-routing-mark=CT passthrough=yes comment=ros-dpbr-CT-CMCC
-add chain=prerouting src-address=10.0.0.0/24 dst-address-list=dpbr-CMCC action=mark-routing new-routing-mark=CMCC passthrough=yes
+add chain=prerouting src-address=10.0.0.0/24 dst-address-list=dpbr-CT action=mark-routing new-routing-mark=CT passthrough=no comment=ros-dpbr-CT-CMCC
+add chain=prerouting src-address=10.0.0.0/24 dst-address-list=dpbr-CMCC action=mark-routing new-routing-mark=CMCC passthrough=no
 
 /ip firewall mangle
 add chain=prerouting in-interface=pppoe-CT connection-mark=no-mark action=mark-connection new-connection-mark=CT_conn comment=in
@@ -209,9 +213,13 @@ add chain=output connection-mark=CMCC_conn action=mark-routing new-routing-mark=
 
 <pre><code>/ip route
 add dst-address=0.0.0.0/0 gateway=pppoe-CT check-gateway=ping distance=1
-add dst-address=0.0.0.0/0 gateway=pppoe-CMCC check-gateway=ping distance=1
+add dst-address=0.0.0.0/0 gateway=pppoe-CMCC check-gateway=ping distance=2
 add dst-address=0.0.0.0/0 gateway=pppoe-CT check-gateway=ping distance=1 routing-mark=CT
 add dst-address=0.0.0.0/0 gateway=pppoe-CMCC check-gateway=ping distance=1 routing-mark=CMCC
+
+/ip route
+add dst-address=0.0.0.0/0 gateway=pppoe-CT check-gateway=ping distance=1 routing-mark=&quot;DNS traffic&quot;
+add dst-address=0.0.0.0/0 gateway=pppoe-CMCC check-gateway=ping distance=2 routing-mark=&quot;DNS traffic&quot;
 </code></pre>
 
 <h3 id="6-最后ros的dns设置-简单指向de-gwd">6.最后ros的dns设置，简单指向de_GWD</h3>
