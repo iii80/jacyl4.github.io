@@ -206,8 +206,16 @@ update-grub
 
 <p>ssh登录vps</p>
 
-<pre><code>apt-get install -y curl
+<p>两种服务端，任选其一。进阶编译版具有http2，tls1.3，jemalloc，ngx_brotli等新特性，解析更快速。</p>
+
+<pre><code>快速安装版
+apt-get install -y curl
 curl -O https://raw.githubusercontent.com/jacyl4/de_GWD/master/de_GWD_Server/server &amp;&amp; chmod +x server &amp;&amp; ./server
+</code></pre>
+
+<pre><code>进阶编译版
+apt-get install -y curl
+curl -O https://raw.githubusercontent.com/jacyl4/de_GWD/master/de_GWD_Server/server2 &amp;&amp; chmod +x server2 &amp;&amp; ./server2
 </code></pre>
 
 <p><img src="https://i.loli.net/2019/05/23/5ce5a57babc6669781.png" alt="服务端" /></p>
